@@ -1,4 +1,5 @@
 from sqlalchemy import create_engine, text
+from sqlalchemy.engine import connection_memoize
 from sqlalchemy.exc import SQLAlchemyError
 
 # String de conexão com host e porta corretos
@@ -16,5 +17,12 @@ def carregar_vagas_db():
             vagas.append(dict(row))
     return vagas
 
-   
+def carregar_vaga_db(id):
+ with engine.connect() as connection:
+    resultado = connection.execute(text(f"SELECT * FROM vagas WHERE id = :val"),                                  {"val": id})
+    registro = resultado.mappings().all()
+    if len(registro) == 0:
+      return None
+    else:
+      return dict(registro[0])
 
