@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, render_template
+from flask import Flask, jsonify, render_template, request
 from database import carregar_vagas_db
 from database import carregar_vaga_db
 
@@ -20,6 +20,12 @@ def lista_vagas():
 def mostra_vaga(id):
     vaga = carregar_vaga_db(id)
     return render_template('detalhevaga.html', vaga=vaga)
+
+@app.route("/vaga/<id>/formulario", methods=['GET','POST'])
+def formulario_vaga(id):
+    data = request.form
+    return jsonify(data)
+
 
 if __name__ == "__main__":
   app.run(host='0.0.0.0', debug=True)
