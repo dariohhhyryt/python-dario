@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, text
+from sqlalchemy import create_engine, text, values
 from sqlalchemy.engine import connection_memoize
 from sqlalchemy.exc import SQLAlchemyError
 
@@ -25,4 +25,31 @@ def carregar_vaga_db(id):
       return None
     else:
       return dict(registro[0])
+        
+
+def formulario_vaga(id_vaga, dado):
+    with engine.connect() as connection: 
+        
+        query = text(f"INSERT INTO formulario_vaga (id_vaga, nome, email, linkedin, experiencia) VALUES (:id_vaga, :nome, :email, :linkedin, :experiencia)")
+
+        connection.execute(
+
+            query, {
+                "vaga_id": id_vaga,
+                "nome": dados["nome"],
+                "email": dados["email"],
+                "linkedin": dados["linkedin"],
+                "experiencia": dados["experiencia"]
+            } )
+
+        connection.commit()  # Garante que a alteração seja persistida
+
+
+
+
+
+
+
+
+
 
